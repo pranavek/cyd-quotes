@@ -240,6 +240,27 @@
 #define LV_USE_GRID  0
 
 /*-----------
+ * Extra Widgets (disable all unused — each has compile-time dependency checks)
+ *----------*/
+#define LV_USE_ANIMIMG    0
+#define LV_USE_CALENDAR   0
+#define LV_USE_CHART      0
+#define LV_USE_COLORWHEEL 0
+#define LV_USE_IMGBTN     0
+#define LV_USE_KEYBOARD   0
+#define LV_USE_LED        0
+#define LV_USE_LIST       0
+#define LV_USE_MENU       0
+#define LV_USE_METER      0
+#define LV_USE_MSGBOX     0
+#define LV_USE_SPANGROUP  0
+#define LV_USE_SPINBOX    0
+#define LV_USE_SPINNER    0
+#define LV_USE_TABVIEW    0
+#define LV_USE_TILEVIEW   0
+#define LV_USE_WIN        0
+
+/*-----------
  * 3rd party libs
  *----------*/
 #define LV_USE_FS_STDIO     0
