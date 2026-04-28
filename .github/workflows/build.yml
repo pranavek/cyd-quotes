@@ -1,0 +1,90 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:    # allow manual trigger from the Actions tab
+
+# GitHub Pages deployment permissions
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      # ── Checkout ────────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── PlatformIO cache (speeds up subsequent builds significantly) ─────────
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            firmware/.pio
+          key: ${{ runner.os }}-pio-${{ hashFiles('firmware/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pio-
+
+      # ── Python + PlatformIO ──────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      # ── Build firmware ───────────────────────────────────────────────────────
+      - name: Build firmware
+        run: cd firmware && pio run --environment esp32-cyd
+
+      # ── Collect binaries for web flasher ─────────────────────────────────────
+      # The manifest.json expects these four files under web-flasher/firmware/
+      - name: Collect firmware binaries
+        run: |
+          mkdir -p web-flasher/firmware
+
+          # Application binary
+          cp firmware/.pio/build/esp32-cyd/firmware.bin     web-flasher/firmware/
+
+          # Bootloader (built by PlatformIO alongside the app)
+          cp firmware/.pio/build/esp32-cyd/bootloader.bin   web-flasher/firmware/
+
+          # Partition table
+          cp firmware/.pio/build/esp32-cyd/partitions.bin   web-flasher/firmware/
+
+          # boot_app0.bin — ships with the Arduino ESP32 framework
+          # Location may vary slightly across framework versions; the glob handles this.
+          BOOT_APP=$(find ~/.platformio/packages -name "boot_app0.bin" | head -1)
+          if [ -z "$BOOT_APP" ]; then
+            echo "ERROR: boot_app0.bin not found in PlatformIO packages"
+            exit 1
+          fi
+          cp "$BOOT_APP" web-flasher/firmware/
+
+          echo "── Collected binaries ──"
+          ls -lh web-flasher/firmware/
+
+      # ── Deploy to GitHub Pages ───────────────────────────────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web-flasher/
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

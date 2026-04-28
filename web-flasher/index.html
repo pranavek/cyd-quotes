@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CYD Quote Viewer — Flash</title>
+
+  <!-- ESP Web Tools — handles WebSerial flashing, no backend required -->
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module">
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      background: #0d0d1a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 2rem;
+    }
+
+    .card {
+      background: #16213e;
+      border: 2px solid #0f3460;
+      border-radius: 16px;
+      padding: 2.5rem 3rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #e94560;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #a0a0c0;
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    esp-web-install-button {
+      display: block;
+      margin: 0 auto 1.5rem;
+    }
+
+    .steps {
+      text-align: left;
+      color: #a0a0c0;
+      font-size: 0.875rem;
+      line-height: 1.8;
+      border-top: 1px solid #0f3460;
+      padding-top: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .steps ol {
+      padding-left: 1.25rem;
+    }
+
+    .steps li + li {
+      margin-top: 0.4rem;
+    }
+
+    .note {
+      color: #555577;
+      font-size: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    a { color: #e94560; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>CYD Quote Viewer</h1>
+    <p class="subtitle">
+      Flash the firmware directly from your browser.<br>
+      Requires Chrome or Edge with WebSerial support.
+    </p>
+
+    <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+
+    <div class="steps">
+      <ol>
+        <li>Connect your CYD to your PC via USB.</li>
+        <li>Click <strong>Install</strong> above.</li>
+        <li>Select the correct COM port when prompted.</li>
+        <li>Wait for flashing to complete (~30 s).</li>
+        <li>The CYD will reboot and show a WiFi setup screen.</li>
+        <li>Connect to <strong>QuoteViewer-AP</strong> with your phone.</li>
+        <li>Enter your WiFi credentials in the captive portal.</li>
+        <li>Enjoy your quotes!</li>
+      </ol>
+    </div>
+
+    <p class="note">
+      Firmware is built automatically from the
+      <a href="https://github.com" target="_blank" rel="noopener">source repository</a>
+      on every push to <code>main</code>.
+    </p>
+  </div>
+</body>
+</html>
