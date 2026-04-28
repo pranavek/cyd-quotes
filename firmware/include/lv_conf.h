@@ -37,8 +37,7 @@
  *=========================*/
 
 /* 56 KB internal heap — covers orb animation + label objects + theme */
-#define LV_MEM_CUSTOM 0
-#define LV_MEM_SIZE   (56U * 1024U)
+#define LV_MEM_CUSTOM 1
 
 /* Set an address for the memory pool. E.g. an external SRAM */
 #define LV_MEM_ADR 0
