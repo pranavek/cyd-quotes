@@ -1,4 +1,5 @@
 // TFT_eSPI configuration for the ESP32 CYD (Cheap Yellow Display)
+#define USER_SETUP_LOADED
 // Board: ESP32-2432S028R
 // Display: ILI9341 2.8" SPI 320x240
 // This file is loaded instead of the library default because -DUSER_SETUP_LOADED

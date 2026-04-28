@@ -63,9 +63,6 @@
 /* Touch input poll interval */
 #define LV_INDEV_DEF_READ_PERIOD 30   /* [ms] */
 
-/* Default display orientation (used when display driver doesn't set it) */
-#define LV_DISP_ROT_NONE 0
-
 /* Use a custom tick source that tells the elapsed time in milliseconds.
    It removes the need to manually update the tick with `lv_tick_inc()` */
 #define LV_TICK_CUSTOM 0
